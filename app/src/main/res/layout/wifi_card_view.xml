@@ -6,8 +6,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     card_view:cardUseCompatPadding="true"
-    card_view:cardCornerRadius="8dp"
-    android:layout_marginBottom="16dp">
+    card_view:cardCornerRadius="3dp"
+    android:theme="@style/AppThemeDark">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,13 +17,9 @@
             android:id="@+id/wifiName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:text="Hello World"
-            android:textSize="13sp"
-            android:paddingBottom="8dp"
-            android:paddingLeft="5dp"
-            android:paddingStart="5dp"
-            android:paddingTop="8dp"
-            android:gravity="start"
+            android:textSize="20sp"
             />
 
         <TextView
@@ -31,17 +27,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello World"
-            android:textSize="9sp"
-            android:paddingBottom="8dp"
-            android:paddingLeft="5dp"
-            android:paddingStart="5dp"
+            android:textSize="15sp"
+            android:padding="5dp"
             android:layout_below="@id/wifiName"
-            android:layout_alignParentBottom="true"
-            android:paddingTop="8dp"
-            android:gravity="start"
             />
-
-
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
