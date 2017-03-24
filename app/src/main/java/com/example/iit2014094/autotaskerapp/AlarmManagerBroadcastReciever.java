@@ -24,6 +24,7 @@ public class AlarmManagerBroadcastReciever extends BroadcastReceiver {
             @Override
             public void run() {
                 context.startService(new Intent(context, VolumeChanger.class));
+                context.startService(new Intent(context,AutoSmsSender.class));
             }
         });
         aa.start();

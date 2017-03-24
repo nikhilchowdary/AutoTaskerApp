@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name='android.permission.WAKE_LOCK'/>
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
 
@@ -42,6 +46,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".VolumeChanger"
+            android:enabled="true"
+            android:process=":my_process" >
+        </service>
+
+        <service
+            android:name=".AutoSmsSender"
+            android:enabled="true"
+            android:process=":my_process_two" >
+        </service>
+        <receiver
+            android:name='com.example.iit2014094.autotaskerapp.AlarmManagerBroadcastReciever'>
+        </receiver>
 
 
     </application>
