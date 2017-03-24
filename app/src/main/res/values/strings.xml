@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="add">ADD</string>
+    <string name="cancel">CANCEL</string>
+    <string name="add_wifi_hint">Add Name</string>
+    <string name="add_wifi_dialog_title">Add Name For This Location</string>
 </resources>

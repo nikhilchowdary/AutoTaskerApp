@@ -21,7 +21,7 @@ public class WifiRvAdapter extends RecyclerView.Adapter<WifiRvAdapter.WifiLocati
 
     public WifiRvAdapter(ArrayList<WifiLocations> wifiLocations)
     {
-        this.wifiLocations = wifiLocations;;
+        this.wifiLocations = wifiLocations;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class WifiRvAdapter extends RecyclerView.Adapter<WifiRvAdapter.WifiLocati
     public class WifiLocationHolder extends RecyclerView.ViewHolder{
 
         CardView cardView;
-        TextView wifiIcon;
-        TextView wifiName;;;
+        TextView wifiMacAddress;
+        TextView wifiName;
         public WifiLocationHolder(View itemView) {
             super(itemView);
             cardView = (CardView)itemView.findViewById(R.id.wifiCardView);
-            wifiIcon = (TextView)itemView.findViewById(R.id.wifiIcon);
+            wifiMacAddress = (TextView)itemView.findViewById(R.id.wifiMacAddress);
             wifiName = (TextView)itemView.findViewById(R.id.wifiName);
         }
     }
@@ -47,12 +47,17 @@ public class WifiRvAdapter extends RecyclerView.Adapter<WifiRvAdapter.WifiLocati
     @Override
     public void onBindViewHolder(WifiRvAdapter.WifiLocationHolder holder, int position) {
         WifiLocations location=wifiLocations.get(position);
-        holder.wifiName.setText("hello");
-
+        holder.wifiName.setText(location.getName());
+        holder.wifiMacAddress.setText(location.getMacAddress());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return wifiLocations.size();
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
     }
 }
