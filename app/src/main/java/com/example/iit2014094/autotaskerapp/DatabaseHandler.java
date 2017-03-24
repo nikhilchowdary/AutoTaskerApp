@@ -59,12 +59,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Getting single contact
-    WifiLocations getContact(int id) {
+    WifiLocations getWifi(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_WIFIS, new String[] { KEY_ID,
                         KEY_NAME, KEY_BSSID_NO,KEY_SILENCE,KEY_AUTO_SMS }, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+                new String[] { id }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 

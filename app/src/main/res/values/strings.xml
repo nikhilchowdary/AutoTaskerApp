@@ -10,4 +10,9 @@
     <string name="cancel">CANCEL</string>
     <string name="add_wifi_hint">Add Name</string>
     <string name="add_wifi_dialog_title">Add Name For This Location</string>
+
+    <string name="toggle_hint">Toggle the following actions accordingly</string>
+    <string name="silence">Silence</string>
+    <string name="AutoSms">AutoSms</string>
+    <string name="busy">Busy. Call You Later!</string>
 </resources>

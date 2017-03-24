@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         wifiLocations = new ArrayList<>();
         wifiLocations.addAll(databaseHandler.getAllWifis());
-        adapter = new WifiRvAdapter(wifiLocations);
+        adapter = new WifiRvAdapter(wifiLocations,context);
         recyclerView.setAdapter(adapter);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
 
                         wifiLocations.clear();
                         wifiLocations.addAll(databaseHandler.getAllWifis());
-                        adapter = new WifiRvAdapter(new ArrayList<WifiLocations>(databaseHandler.getAllWifis()));
+                        adapter = new WifiRvAdapter(new ArrayList<WifiLocations>(databaseHandler.getAllWifis()),context);
                         adapter.notifyDataSetChanged();
                         recyclerView.smoothScrollToPosition(adapter.getItemCount());
                         alertDialog.cancel();
