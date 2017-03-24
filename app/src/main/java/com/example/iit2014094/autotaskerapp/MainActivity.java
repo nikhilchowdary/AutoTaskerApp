@@ -1,8 +1,17 @@
 package com.example.iit2014094.autotaskerapp;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -17,6 +26,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.iit2014094.autotaskerapp.adapters.WifiRvAdapter;
 import com.example.iit2014094.autotaskerapp.models.WifiLocations;
@@ -32,6 +43,8 @@ public class MainActivity extends AppCompatActivity
     private Context context;
     private DatabaseHandler databaseHandler;
     private ArrayList<WifiLocations> wifiLocations;
+    private WifiManager wifiManager;
+    private String ssid,bssid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -58,10 +71,6 @@ public class MainActivity extends AppCompatActivity
                 final AlertDialog alertDialog = new AlertDialog.Builder(context)
                         .setTitle(R.string.add_wifi_dialog_title)
                         .setView(dialogView)
- /*                               context.getResources().getDimensionPixelSize(R.dimen.spacing_left),
-                                context.getResources().getDimensionPixelSize(R.dimen.spacing_top),
-                                context.getResources().getDimensionPixelSize(R.dimen.spacing_right),
-                                context.getResources().getDimensionPixelSize(R.dimen.spacing_bottom))*/
                         .setPositiveButton(R.string.add, null)
                         .setNegativeButton(R.string.cancel, null)
                         .create();
@@ -70,7 +79,10 @@ public class MainActivity extends AppCompatActivity
                 alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        databaseHandler.addWifi(new WifiLocations(etAddWifiName.getText().toString(),"temporary mac address"));
+
+                        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                        getWifiNetworksList();
+
                         wifiLocations.clear();
                         wifiLocations.addAll(databaseHandler.getAllWifis());
                         adapter = new WifiRvAdapter(new ArrayList<WifiLocations>(databaseHandler.getAllWifis()));
@@ -149,5 +161,42 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void getWifiNetworksList() {
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+
+        while(!wifiManager.isWifiEnabled()) {}
+        registerReceiver(new BroadcastReceiver(){
+
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+            @SuppressLint("UseValueOf") @Override
+            public void onReceive(Context context, Intent intent) {
+
+                final WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+                if (connectionInfo != null ) {
+                    if(connectionInfo.getBSSID()!=null) {
+
+                        ssid = connectionInfo.getSSID();
+                        bssid = connectionInfo.getBSSID();
+                    }
+                }
+                if(!("".equals(ssid)) && !("".equals(bssid))){
+
+
+                    if(databaseHandler.CheckIsDataAlreadyInDBorNot(bssid)){
+
+                        Toast.makeText(getBaseContext(),"location  is  already  marked  as  silent",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        databaseHandler.addWifi(new WifiLocations(ssid,bssid));
+                    }
+                }
+                unregisterReceiver(this);
+            }
+        },filter);
+        wifiManager.startScan();
     }
 }
