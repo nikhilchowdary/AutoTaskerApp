@@ -1,20 +1,27 @@
 package com.example.iit2014094.autotaskerapp;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.example.iit2014094.autotaskerapp.adapters.WifiRvAdapter;
+import com.example.iit2014094.autotaskerapp.models.WifiLocations;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -22,6 +29,9 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private WifiRvAdapter adapter;
+    private Context context;
+    private DatabaseHandler databaseHandler;
+    private ArrayList<WifiLocations> wifiLocations;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -30,18 +40,49 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        context = this;
+        databaseHandler = new DatabaseHandler(context);
+
         recyclerView = (RecyclerView) findViewById(R.id.wifiRv);
-        adapter = new WifiRvAdapter(null);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        wifiLocations = new ArrayList<>();
+        wifiLocations.addAll(databaseHandler.getAllWifis());
+        adapter = new WifiRvAdapter(wifiLocations);
         recyclerView.setAdapter(adapter);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                final View dialogView = View.inflate(context,R.layout.dialog_add_wifi, null);
+                final AlertDialog alertDialog = new AlertDialog.Builder(context)
+                        .setTitle(R.string.add_wifi_dialog_title)
+                        .setView(dialogView)
+ /*                               context.getResources().getDimensionPixelSize(R.dimen.spacing_left),
+                                context.getResources().getDimensionPixelSize(R.dimen.spacing_top),
+                                context.getResources().getDimensionPixelSize(R.dimen.spacing_right),
+                                context.getResources().getDimensionPixelSize(R.dimen.spacing_bottom))*/
+                        .setPositiveButton(R.string.add, null)
+                        .setNegativeButton(R.string.cancel, null)
+                        .create();
+                final EditText etAddWifiName = (EditText)dialogView.findViewById(R.id.add_wifi_name);
+                alertDialog.show();
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        databaseHandler.addWifi(new WifiLocations(etAddWifiName.getText().toString(),"temporary mac address"));
+                        wifiLocations.clear();
+                        wifiLocations.addAll(databaseHandler.getAllWifis());
+                        adapter = new WifiRvAdapter(new ArrayList<WifiLocations>(databaseHandler.getAllWifis()));
+                        adapter.notifyDataSetChanged();
+                        recyclerView.smoothScrollToPosition(adapter.getItemCount());
+                        alertDialog.cancel();
+                    }
+                });
+
             }
-        });
+        }
+        );
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

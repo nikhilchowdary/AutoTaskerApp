@@ -14,25 +14,33 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/wifiIcon"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:contentDescription="@string/action_settings"
-            android:scaleType="centerCrop" />
-
-        <TextView
             android:id="@+id/wifiName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
             android:text="Hello World"
-            android:textColor="#ffffff"
-            android:layout_below="@+id/wifiIcon"
+            android:textSize="13sp"
             android:paddingBottom="8dp"
+            android:paddingLeft="5dp"
+            android:paddingStart="5dp"
             android:paddingTop="8dp"
-            android:gravity="center_horizontal"
+            android:gravity="start"
+            />
+
+        <TextView
+            android:id="@+id/wifiMacAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World"
+            android:textSize="9sp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="5dp"
+            android:paddingStart="5dp"
+            android:layout_below="@id/wifiName"
             android:layout_alignParentBottom="true"
-            android:background="#1976D2"/>
+            android:paddingTop="8dp"
+            android:gravity="start"
+            />
+
 
     </RelativeLayout>
 

@@ -15,8 +15,18 @@ public class WifiLocations {
 
     // Empty constructor
     public WifiLocations(){
+        this._isSilent = "false";
+        this._isAutoSms = "false";
 
     }
+    public WifiLocations(String name, String mac_address)
+    {
+        this._name = name;
+        this._mac_address = mac_address;
+        this._isSilent = "false";
+        this._isAutoSms = "false";
+    }
+
     // constructor
     public WifiLocations(int id, String name, String mac_address,String isSilent,String isAutoSms){
         this._id = id;
