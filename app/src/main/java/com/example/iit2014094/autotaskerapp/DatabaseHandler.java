@@ -24,16 +24,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_BSSID_NO = "mac_address";
     private static final String KEY_SILENCE = "silence";
     private static final String KEY_AUTO_SMS = "auto_sms";
+    private Context context;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_WIFIS_TABLE = "CREATE TABLE " + TABLE_WIFIS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_BSSID_NO + " TEXT" + KEY_SILENCE + " TEXT,"+KEY_AUTO_SMS + " TEXT,"+ ")";
+                + KEY_BSSID_NO + " TEXT," + KEY_SILENCE + " TEXT,"+KEY_AUTO_SMS + " TEXT"+ ")";
         db.execSQL(CREATE_WIFIS_TABLE);
     }
 
@@ -43,11 +45,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addContact(WifiLocations wifi) {
+    void addWifi(WifiLocations wifi) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-
         values.put(KEY_NAME, wifi.getName());
         values.put(KEY_BSSID_NO, wifi.getMacAddress());
         values.put(KEY_SILENCE,wifi.getIsSilent());
