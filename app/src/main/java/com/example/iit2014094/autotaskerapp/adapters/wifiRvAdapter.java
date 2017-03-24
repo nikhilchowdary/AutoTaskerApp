@@ -55,7 +55,11 @@ public class WifiRvAdapter extends RecyclerView.Adapter<WifiRvAdapter.WifiLocati
             Toast.makeText(context,"hello",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(context, CustomiseWifi.class);
             int position = getAdapterPosition();
+
             intent.putExtra("id",wifiLocations.get(position).getID());
+            intent.putExtra("name",wifiLocations.get(position).getName());
+            intent.putExtra("mac",wifiLocations.get(position).getMacAddress());
+
             context.startActivity(intent);
         }
 
