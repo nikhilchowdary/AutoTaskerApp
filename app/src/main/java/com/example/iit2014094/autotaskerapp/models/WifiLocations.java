@@ -55,5 +55,21 @@ public class WifiLocations {
     public void setMacAddress(String mac_address){
         this._mac_address = mac_address;
     }
+
+    public String getIsSilent(){
+        return this._isSilent;
+    }
+
+    public void setIsSilent(String isSilent){
+        this._isSilent = isSilent;
+    }
+
+    public String getAutoSms(){
+        return this._isAutoSms;
+    }
+
+    public void setIsAutoSms(String isAutoSms){
+        this._isAutoSms = isAutoSms;
+    }
 }
 
