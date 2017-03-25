@@ -3,27 +3,54 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/wifiName"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/wifiMacAddress"
-        />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="wifi name"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/wifiName"
+            android:background="@color/colorPrimary"
+            android:layout_weight="2"
+            />
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:text="wifi mac address"
+            android:padding="5dp"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/wifiMacAddress"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/toggle_hint"
-        android:textSize="15sp"
+        android:textSize="17sp"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
         />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_gravity="start"
@@ -31,7 +58,7 @@
             android:paddingStart="@dimen/padding_small"
             android:paddingLeft="@dimen/padding_small"
             android:layout_height="wrap_content">
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/silence"
@@ -56,7 +83,8 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp">>
         <LinearLayout
             android:layout_width="fill_parent"
             android:orientation="horizontal"
@@ -68,7 +96,7 @@
                 android:paddingStart="@dimen/padding_small"
                 android:paddingLeft="@dimen/padding_small"
                 android:layout_height="wrap_content">
-                <EditText
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/AutoSms"
@@ -90,10 +118,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:orientation="horizontal"
             android:id="@+id/ll_autosms_text"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_gravity="start"
@@ -101,9 +130,10 @@
                 android:paddingStart="@dimen/padding_small"
                 android:paddingLeft="@dimen/padding_small"
                 android:layout_height="wrap_content">
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="13sp"
                     android:text="@string/busy"
                     />
             </LinearLayout>
@@ -117,7 +147,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="EDIT"
+                    android:layout_marginTop="10dp"
+                    android:text="Edit"
                     />
             </LinearLayout>
         </LinearLayout>

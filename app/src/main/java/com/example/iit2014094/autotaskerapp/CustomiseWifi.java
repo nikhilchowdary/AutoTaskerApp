@@ -6,6 +6,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.iit2014094.autotaskerapp.models.WifiLocations;
@@ -29,29 +30,28 @@ public class CustomiseWifi extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customise_wifi);
 
-        wifiName = (TextView)findViewById(R.id.wifiName);
-        wifiMacAddress = (TextView) findViewById(R.id.wifiMacAddress);
 
         scSilence = (SwitchCompat) findViewById(R.id.sc_silence);
         scAutoSms = (SwitchCompat) findViewById(R.id.sc_AutoSms);
         llAutoSmsText = (LinearLayout) findViewById(R.id.ll_autosms_text);
 
         databaseHandler = new DatabaseHandler(this);
+
         String id = getIntent().getExtras().getString("id");
         final WifiLocations wifiLocation = databaseHandler.getWifi("1");
+        String name = getIntent().getExtras().getString("name");
+        String mac = getIntent().getExtras().getString("mac");
 
-        wifiName.setText(wifiLocation.getName());
-        wifiMacAddress.setText(wifiLocation.getMacAddress());
+        TextView wifiname=(TextView)findViewById(R.id.wifiName);
+        TextView wifimac=(TextView)findViewById(R.id.wifiMacAddress);
 
-        scSilence.setEnabled(Boolean.parseBoolean(wifiLocation.getIsSilent()));
-        scAutoSms.setEnabled(Boolean.parseBoolean(wifiLocation.getAutoSms()));
+        wifiname.setText(name);
+        wifimac.setText(mac);
 
-        if(scAutoSms.isEnabled()) {
-            llAutoSmsText.setVisibility(View.VISIBLE);
-        }
-        else {
-            llAutoSmsText.setVisibility(View.GONE);
-        }
+
+
+        scSilence.setChecked(Boolean.parseBoolean(wifiLocation.getIsSilent()));
+        scAutoSms.setChecked(Boolean.parseBoolean(wifiLocation.getAutoSms()));
 
         scSilence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -68,6 +68,12 @@ public class CustomiseWifi extends AppCompatActivity {
                 databaseHandler.deleteWifi(wifiLocation);
                 wifiLocation.setIsAutoSms(String.valueOf(isChecked));
                 databaseHandler.addWifi(wifiLocation);
+                if(scAutoSms.isChecked()) {
+                    llAutoSmsText.setVisibility(View.VISIBLE);
+                }
+                else {
+                    llAutoSmsText.setVisibility(View.GONE);
+                }
             }
         });
 
