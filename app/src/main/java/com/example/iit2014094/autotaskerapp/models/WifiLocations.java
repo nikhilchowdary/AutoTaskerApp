@@ -23,8 +23,8 @@ public class WifiLocations {
     {
         this._name = name;
         this._mac_address = mac_address;
-        this._isSilent = "false";
-        this._isAutoSms = "false";
+        this._isSilent = "true";
+        this._isAutoSms = "true";
     }
 
     // constructor

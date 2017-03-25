@@ -10,10 +10,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -96,6 +98,15 @@ public class MainActivity extends AppCompatActivity
         }
         );
 
+        SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        Boolean start = getData.getBoolean("StartOrStopApp",false);
+        if(start) {
+            startApp();
+        }
+        else {
+            stopApp();
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -132,6 +143,14 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
+            SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            Boolean start = getData.getBoolean("StartOrStopApp",false);
+            if(start)
+                startApp();
+            else
+                stopApp();
             return true;
         }
 
@@ -184,7 +203,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 if(!("".equals(ssid)) && !("".equals(bssid))){
 
-
+                    Toast.makeText(context,ssid+"  "+bssid,Toast.LENGTH_LONG).show();
                     if(databaseHandler.CheckIsDataAlreadyInDBorNot(bssid)){
 
                         Toast.makeText(getBaseContext(),"location  is  already  marked  as  silent",
@@ -204,7 +223,7 @@ public class MainActivity extends AppCompatActivity
         AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmManagerBroadcastReciever.class);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 2 , pi);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 100 , pi);
     }
 
     private void stopApp(){

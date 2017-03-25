@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,7 +38,7 @@ public class CustomiseWifi extends AppCompatActivity {
 
         databaseHandler = new DatabaseHandler(this);
         String id = getIntent().getExtras().getString("id");
-        WifiLocations wifiLocation = databaseHandler.getWifi("1");
+        final WifiLocations wifiLocation = databaseHandler.getWifi("1");
 
         wifiName.setText(wifiLocation.getName());
         wifiMacAddress.setText(wifiLocation.getMacAddress());
@@ -51,6 +52,24 @@ public class CustomiseWifi extends AppCompatActivity {
         else {
             llAutoSmsText.setVisibility(View.GONE);
         }
+
+        scSilence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                databaseHandler.deleteWifi(wifiLocation);
+                wifiLocation.setIsSilent(String.valueOf(isChecked));
+                databaseHandler.addWifi(wifiLocation);
+            }
+        });
+
+        scAutoSms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                databaseHandler.deleteWifi(wifiLocation);
+                wifiLocation.setIsAutoSms(String.valueOf(isChecked));
+                databaseHandler.addWifi(wifiLocation);
+            }
+        });
 
     }
 
