@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
 
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
-    private WifiRvAdapter adapter;
+    public static WifiRvAdapter adapter;
     private Context context;
     private DatabaseHandler databaseHandler;
     private ArrayList<WifiLocations> wifiLocations;
@@ -85,11 +85,6 @@ public class MainActivity extends AppCompatActivity
                         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                         getWifiNetworksList();
 
-                        wifiLocations.clear();
-                        wifiLocations.addAll(databaseHandler.getAllWifis());
-                        adapter = new WifiRvAdapter(new ArrayList<WifiLocations>(databaseHandler.getAllWifis()),context);
-                        adapter.notifyDataSetChanged();
-                        recyclerView.smoothScrollToPosition(adapter.getItemCount());
                         alertDialog.cancel();
                     }
                 });
@@ -99,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         );
 
         SharedPreferences getData = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        Boolean start = getData.getBoolean("StartOrStopApp",false);
+        Boolean start = getData.getBoolean("StartOrStopApp",true);
         if(start) {
             startApp();
         }
@@ -107,11 +102,11 @@ public class MainActivity extends AppCompatActivity
             stopApp();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+      //  DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       // ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        //        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //drawer.setDrawerListener(toggle);
+        //toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -203,7 +198,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 if(!("".equals(ssid)) && !("".equals(bssid))){
 
-                    Toast.makeText(context,ssid+"  "+bssid,Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,ssid+"  "+bssid + String.valueOf(databaseHandler.getWifisCount()),Toast.LENGTH_LONG).show();
                     if(databaseHandler.CheckIsDataAlreadyInDBorNot(bssid)){
 
                         Toast.makeText(getBaseContext(),"location  is  already  marked  as  silent",
@@ -211,6 +206,12 @@ public class MainActivity extends AppCompatActivity
                     }
                     else{
                         databaseHandler.addWifi(new WifiLocations(ssid,bssid));
+                        wifiLocations.clear();
+                        wifiLocations.addAll(databaseHandler.getAllWifis());
+                        adapter = new WifiRvAdapter(new ArrayList<WifiLocations>(databaseHandler.getAllWifis()),context);
+                        Toast.makeText(context,ssid+"  "+bssid + String.valueOf(databaseHandler.getWifisCount()),Toast.LENGTH_LONG).show();
+                        adapter.notifyDataSetChanged();
+                        recyclerView.smoothScrollToPosition(adapter.getItemCount());
                     }
                 }
                 unregisterReceiver(this);
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity
         AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmManagerBroadcastReciever.class);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 100 , pi);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 3 , pi);
     }
 
     private void stopApp(){

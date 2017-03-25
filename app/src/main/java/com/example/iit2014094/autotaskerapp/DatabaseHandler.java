@@ -132,10 +132,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + TABLE_WIFIS;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
+        int ret = cursor.getCount();
         cursor.close();
 
         // return count
-        return cursor.getCount();
+        return ret;
     }
 
     //check if wifi is already in database

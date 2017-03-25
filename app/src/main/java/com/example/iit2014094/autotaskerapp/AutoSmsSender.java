@@ -1,6 +1,7 @@
 package com.example.iit2014094.autotaskerapp;
 
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,10 +11,12 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Created by VOJJALA TEJA on 24-03-2017.
@@ -84,7 +87,7 @@ public class AutoSmsSender extends Service {
                     if(state==TelephonyManager.CALL_STATE_RINGING)
                     {
                         try {
-                            Toast.makeText(getApplicationContext(),"Hii",Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getApplicationContext(),"Hii",Toast.LENGTH_LONG).show();
                             Class<?> classTelephony = Class.forName(telephonyManager.getClass().getName());
                             Method method = classTelephony.getDeclaredMethod("getITelephony");
                             method.setAccessible(true);
@@ -93,12 +96,12 @@ public class AutoSmsSender extends Service {
                             Method methodEndCall = telephonyInterfaceClass.getDeclaredMethod("endCall");
                             methodEndCall.invoke(telephonyInterface);
                             String strSMSBody = "Busy. Will call you back!";
-/*                            SmsManager sms = SmsManager.getDefault();
+                            SmsManager sms = SmsManager.getDefault();
                             List<String> messages = sms.divideMessage(strSMSBody);
                             for (String message : messages) {
                                 sms.sendTextMessage(incomingNumber, null, message, PendingIntent.getBroadcast(
                                         getApplicationContext(), 0, null, 0), null);
-                            }*/
+                            }
 
                         } catch (Exception e) {
                             e.printStackTrace();

@@ -11,10 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.iit2014094.autotaskerapp.CustomiseWifi;
+import com.example.iit2014094.autotaskerapp.DatabaseHandler;
+import com.example.iit2014094.autotaskerapp.MainActivity;
 import com.example.iit2014094.autotaskerapp.R;
 import com.example.iit2014094.autotaskerapp.models.WifiLocations;
 
 import java.util.ArrayList;
+
+import static com.example.iit2014094.autotaskerapp.MainActivity.adapter;
 
 /**
  * Created by VOJJALA TEJA on 24-03-2017.
@@ -37,7 +41,7 @@ public class WifiRvAdapter extends RecyclerView.Adapter<WifiRvAdapter.WifiLocati
         return wifiLocationHolder;
     }
 
-    public class WifiLocationHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class WifiLocationHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
 
         CardView cardView;
         TextView wifiMacAddress;
@@ -48,6 +52,7 @@ public class WifiRvAdapter extends RecyclerView.Adapter<WifiRvAdapter.WifiLocati
             wifiMacAddress = (TextView)itemView.findViewById(R.id.wifiMacAddress);
             wifiName = (TextView)itemView.findViewById(R.id.wifiName);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -63,6 +68,17 @@ public class WifiRvAdapter extends RecyclerView.Adapter<WifiRvAdapter.WifiLocati
             context.startActivity(intent);
         }
 
+
+        @Override
+        public boolean onLongClick(View view) {
+            int position = getAdapterPosition();
+            DatabaseHandler databaseHandler = new DatabaseHandler(context);
+            databaseHandler.deleteWifi(wifiLocations.get(position));
+            wifiLocations.remove(position);
+            adapter = new WifiRvAdapter(new ArrayList<WifiLocations>(databaseHandler.getAllWifis()),context);
+            adapter.notifyDataSetChanged();
+            return true;
+        }
     }
 
     @Override

@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
  * Created by iit2014094 on 3/24/2017.
  */
 
-public class SplashActivity extends Activity {
-    private static int SPLASH_TIME_OUT = 3000;
+public class SplashActivity extends AppCompatActivity {
+    private static int SPLASH_TIME_OUT = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
