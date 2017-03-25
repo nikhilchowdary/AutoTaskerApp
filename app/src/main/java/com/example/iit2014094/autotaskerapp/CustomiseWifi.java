@@ -30,8 +30,6 @@ public class CustomiseWifi extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customise_wifi);
 
-        wifiName = (TextView)findViewById(R.id.wifiName);
-        wifiMacAddress = (TextView) findViewById(R.id.wifiMacAddress);
 
         scSilence = (SwitchCompat) findViewById(R.id.sc_silence);
         scAutoSms = (SwitchCompat) findViewById(R.id.sc_AutoSms);
@@ -40,6 +38,7 @@ public class CustomiseWifi extends AppCompatActivity {
         databaseHandler = new DatabaseHandler(this);
 
         String id = getIntent().getExtras().getString("id");
+        final WifiLocations wifiLocation = databaseHandler.getWifi("1");
         String name = getIntent().getExtras().getString("name");
         String mac = getIntent().getExtras().getString("mac");
 
@@ -49,16 +48,26 @@ public class CustomiseWifi extends AppCompatActivity {
         wifiname.setText(name);
         wifimac.setText(mac);
 
-        WifiLocations wifiLocation = databaseHandler.getWifi("1");
 
 
         scSilence.setChecked(Boolean.parseBoolean(wifiLocation.getIsSilent()));
         scAutoSms.setChecked(Boolean.parseBoolean(wifiLocation.getAutoSms()));
 
+        scSilence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                databaseHandler.deleteWifi(wifiLocation);
+                wifiLocation.setIsSilent(String.valueOf(isChecked));
+                databaseHandler.addWifi(wifiLocation);
+            }
+        });
 
         scAutoSms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                databaseHandler.deleteWifi(wifiLocation);
+                wifiLocation.setIsAutoSms(String.valueOf(isChecked));
+                databaseHandler.addWifi(wifiLocation);
                 if(scAutoSms.isChecked()) {
                     llAutoSmsText.setVisibility(View.VISIBLE);
                 }
@@ -67,6 +76,7 @@ public class CustomiseWifi extends AppCompatActivity {
                 }
             }
         });
+
     }
 
 }
