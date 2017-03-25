@@ -1,15 +1,24 @@
 package com.example.iit2014094.autotaskerapp;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.iit2014094.autotaskerapp.adapters.WifiRvAdapter;
 import com.example.iit2014094.autotaskerapp.models.WifiLocations;
+
+import java.util.ArrayList;
 
 /**
  * Created by VOJJALA TEJA on 24-03-2017.
@@ -67,6 +76,38 @@ public class CustomiseWifi extends AppCompatActivity {
                 }
             }
         });
+
+        TextView msg=(TextView)findViewById(R.id.msg);
+        msg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final View dialogView = View.inflate(getApplicationContext(),R.layout.dialog_add_wifi, null);
+
+                final AlertDialog alertDialog = new AlertDialog.Builder(getApplicationContext())
+                        .setTitle(R.string.add_wifi_dialog_title)
+                        .setView(dialogView)
+                        .setPositiveButton(R.string.add, null)
+                        .setNegativeButton(R.string.cancel, null)
+                        .create();
+
+                alertDialog.show();
+                final EditText etAddWifiName = (EditText)dialogView.findViewById(R.id.add_wifi_name);
+
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        alertDialog.cancel();
+                    }
+                });
+
+
+
+            }
+        });
     }
+
 
 }
